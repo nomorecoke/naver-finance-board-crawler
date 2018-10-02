@@ -1,5 +1,6 @@
 import os
 import sqlite3
+import pandas as pd
 
 DB_DIR = 'data'
 DB_FILENAME = 'naver_board.db'
@@ -12,7 +13,6 @@ if not os.path.exists(DB_DIR):
 class DB_manager:
     def __init__(self):
         self.latest_date = self.get_latest_date_df()  # k: code, v: DB에 있는 최근 날짜
-        print(self.latest_date)
 
     def write(self, code, df):
         latest_date = self.latest_date.get(code, 0)
@@ -26,6 +26,10 @@ class DB_manager:
 
     @staticmethod
     def get_latest_date_df():
+        """
+        DB에 저장된 종목들의 가장 최신 글의 날짜를 가져오는 메소드.
+        :return: dict {k: code, v: latest posted date}
+        """
         with sqlite3.connect(DB_PATH) as con:
             cursor = con.cursor()
             cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
@@ -35,6 +39,6 @@ class DB_manager:
             latest_date = {}
             for code in db_code_list:
                 cursor.execute("SELECT date FROM '{}' ORDER BY date DESC LIMIT 1".format(code))
-                latest_date[code] = cursor.fetchall()[0][0]
+                latest_date[code] = pd.to_datetime(cursor.fetchall()[0][0])
 
             return latest_date
