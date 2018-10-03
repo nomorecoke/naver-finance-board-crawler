@@ -86,7 +86,7 @@ class Crawler:
                 posts['content'] = content
                 return posts
 
-            pool = multiprocessing.pool.ThreadPool(20) # 한 페이지에 20개의 글이 나타나므로 Thread 개수 20
+            pool = multiprocessing.pool.ThreadPool(10)  # 한 페이지에 20개의 글이 표시됨을 참고.
             posts = [pool.apply_async(fetch_by_post, args={title_atag: title_atag}) for title_atag in title_atags]
             pool.close()
             pool.join()
