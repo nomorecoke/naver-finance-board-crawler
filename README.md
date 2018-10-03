@@ -11,14 +11,17 @@ BeautifulSoup4에 lxml parser를 사용하였고 Multiprocessing, Multithreading
 ![db_sample](./img/db_sample.png)
 ## 실행 환경 세팅
 OS: Window 10
-1. `conda create -n NEW_ENV_NAME python=3.7.0`
-1. `activate NEW_ENV_NAME`
-1. `conda install requests BeautifulSoup4 lxml pandas sqlite`
-  
+```
+> conda create -n NEW_ENV_NAME python=3.7.0
+> activate NEW_ENV_NAME
+> conda install requests BeautifulSoup4 lxml pandas sqlite
+```
 ## 실행 방법
 방법1. `python main.py` (os.cpu_count()개수의 프로세스 사용)  
 
-방법2. `python main.py -n 2` : 2개 프로세스 사용
+방법2. `python main.py -n 2` (2개 프로세스 사용)
 
 ## 생각
-requests.get() 응답을 기다리는데에 대부분의 시간이 소요됨. -> async requests??
+requests.get() 응답을 기다리는데에 대부분의 시간이 소요됨.  
+-> async requests가 더 좋을까??(e.g. grequests,  requests-futures ...)  
+오히려 이미 받아온 데이터인지 확인하는 작업이 지연됨. 현재 구조가 더 괜찮다고 생각함.
